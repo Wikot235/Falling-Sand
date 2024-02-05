@@ -19,3 +19,11 @@
 *.ilk
 *.pdb
 *_p.c
+*.vsidx
+*.db
+*.ipch
+*.exe
+*.recipe
+*.tlog
+*.txt
+*.idb
