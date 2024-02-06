@@ -27,3 +27,7 @@
 *.tlog
 *.txt
 *.idb
+*.opendb
+*.db-shm
+*.db-wal
+*.dll
