@@ -1,8 +1,11 @@
 # Falling sand simulation
 
-Very simple falling sand simulation made with SDL library.
+Very simple falling sand simulation made with raylib library.
 
 To compile it, use Visual Studio 2022 (toolset v143).
 
-### Constructive criticism and pull requests are welcome :)
+### Before using it, please read the license.
+
+
+Constructive criticism and pull requests are welcome :)
 
