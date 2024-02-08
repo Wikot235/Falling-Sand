@@ -11,11 +11,13 @@ int grid[w / particleSize][h / particleSize];
 int mouseposx;
 int mouseposy;
 
-bool grid_enabled = false;
 bool hints_enabled = true;
+bool grid_enabled = false;
+bool FPS_enabled = false;
 
 #if _DEBUG
 grid_enabled = true;
+FPS_enabled = true;
 #endif
 
 // It closes the game
@@ -46,16 +48,13 @@ void InitGame()
 
 int main()
 {
-
 	InitGame();
-	BeginDrawing();
 
 	while (!WindowShouldClose())
 	{
-
+		BeginDrawing();
 		ClearBackground(Color{ 0, 0, 0, 255 });
 		SetTargetFPS(60);
-		DrawFPS(1, 0);
 
 		if (IsKeyPressed(KEY_G))
 		{
@@ -81,26 +80,37 @@ int main()
 			}
 		}
 
+		if (IsKeyPressed(KEY_F))
+		{
+			if (FPS_enabled == true)
+			{
+				FPS_enabled = false;
+			}
+			else
+			{
+				FPS_enabled = true;
+			}
+		}
+
 		if (IsKeyPressed(KEY_R))
 		{
 			Restart();
 		}
 
-		//this code doesnt work!
+		//It moves the sand
 		for (int i = 0; i < (w / particleSize); i++)
 		{
 			for (int j = (h / particleSize) - 1; j >= 0; j--)
 			{
-				if (grid[i][j] == 1)
+				if (grid[i][j] == 1 && j < (h / (particleSize) -1) && grid[i][j +1] == 0)
 				{
-					grid[i][j] = 0;
-					grid[i][j + 1] = 1;
+					std::swap(grid[i][j], grid[i][j + 1]);
 				}
 			}
 		}
 
 
-		if (IsMouseButtonPressed(MOUSE_BUTTON_LEFT))
+		if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
 		{
 			if (grid[GetMouseX() / particleSize][GetMouseY() / particleSize] == 0)
 			{
@@ -136,8 +146,14 @@ int main()
 		if (hints_enabled == true)
 		{
 			DrawText("Press F1 to toggle hints", 25, 25, 25, Color{ 255,255,255,255 });
-			DrawText("Press G to toggle grid", 25, 75, 25, Color{ 255,255,255,255 });
-			DrawText("Press R to restart the simulation", 25, 50, 25, Color{ 255,255,255,255 });
+			DrawText("Press G to toggle grid", 25, 50, 25, Color{ 255,255,255,255 });
+			DrawText("Press F to toggle FPS", 25, 75, 25, Color{ 255,255,255,255 });
+			DrawText("Press R to restart the simulation", 25, 100, 25, Color{ 255,255,255,255 });
+		}
+
+		if (FPS_enabled)
+		{
+			DrawFPS(1, 0);
 		}
 
 		EndDrawing();
