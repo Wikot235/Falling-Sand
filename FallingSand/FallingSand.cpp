@@ -1,24 +1,18 @@
 #include "raylib.h"
 #include <iostream>
 
+//game variables
 const int w = 1280;
 const int h = 720;
 
-const int particleSize = 20;
-
+const int particleSize = 10;
 int grid[w / particleSize][h / particleSize];
-
 int mouseposx;
 int mouseposy;
 
 bool hints_enabled = true;
 bool grid_enabled = false;
-bool FPS_enabled = false;
-
-#if _DEBUG
-grid_enabled = true;
-FPS_enabled = true;
-#endif
+bool FPS_enabled = true;
 
 // It closes the game
 void Kill_Game()
@@ -42,7 +36,7 @@ void Restart()
 void InitGame()
 {
 	InitWindow(w, h, "Falling Sand Simulation");
-
+	SetTargetFPS(60);
 	Restart();
 }
 
@@ -54,7 +48,6 @@ int main()
 	{
 		BeginDrawing();
 		ClearBackground(Color{ 0, 0, 0, 255 });
-		SetTargetFPS(60);
 
 		if (IsKeyPressed(KEY_G))
 		{
@@ -102,9 +95,21 @@ int main()
 		{
 			for (int j = (h / particleSize) - 1; j >= 0; j--)
 			{
-				if (grid[i][j] == 1 && j < (h / (particleSize) -1) && grid[i][j +1] == 0)
+				if (grid[i][j] == 1 && j < ((h / particleSize) - 1))
 				{
-					std::swap(grid[i][j], grid[i][j + 1]);
+					int x = (rand() % 2) + 1;
+					if (grid[i][j + 1] == 0)
+					{
+						std::swap(grid[i][j], grid[i][j + 1]);
+					}
+					else if (grid[i - 1][j + 1] == 0 && x == 1)
+					{
+						std::swap(grid[i][j], grid[i-1][j + 1]);
+					}
+					else if (grid[i + 1][j + 1] == 0 && x == 2)
+					{
+						std::swap(grid[i][j], grid[i + 1][j + 1]);
+					}
 				}
 			}
 		}
@@ -112,10 +117,18 @@ int main()
 
 		if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
 		{
-			if (grid[GetMouseX() / particleSize][GetMouseY() / particleSize] == 0)
+			if (GetMouseX() < w && GetMouseY() < h)
 			{
 				grid[GetMouseX() / particleSize][GetMouseY() / particleSize] = 1;
-			}	
+			}
+		}
+
+		if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT))
+		{
+			if (GetMouseX() < w && GetMouseY() < h)
+			{
+				grid[GetMouseX() / particleSize][GetMouseY() / particleSize] = 2;
+			}
 		}
 		
 		//Grid stuff
@@ -139,6 +152,10 @@ int main()
 				if (grid[i][j] == 1)
 				{
 					DrawRectangle(i * particleSize, j * particleSize, particleSize, particleSize, Color{ 255,255,255,255 });
+				}
+				else if (grid[i][j] == 2)
+				{
+					DrawRectangle(i * particleSize, j * particleSize, particleSize, particleSize, Color{ 255,128,128,255 });
 				}
 			}
 		}
