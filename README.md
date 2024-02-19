@@ -3,7 +3,6 @@
 Very simple falling sand simulation made with raylib library.
 
 To compile it, use Visual Studio 2022 (toolset v143).
-Also, you need to have 
 
 ### Before using it, please read the license.
 
