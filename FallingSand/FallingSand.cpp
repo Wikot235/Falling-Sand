@@ -40,6 +40,34 @@ void InitGame()
 	Restart();
 }
 
+void PaintSand()
+{
+	if (GetMouseX() < w && GetMouseY() < h)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				grid[(GetMouseX() / particleSize) + i][(GetMouseY() / particleSize) + j] = 1;
+			}
+		}
+	}
+}
+
+void PaintWall()
+{
+	if (GetMouseX() < w && GetMouseY() < h)
+	{
+		for (int i = 0; i < 4; i++)
+		{
+			for (int j = 0; j < 4; j++)
+			{
+				grid[(GetMouseX() / particleSize) + i][(GetMouseY() / particleSize) + j] = 2;
+			}
+		}
+	}
+}
+
 int main()
 {
 	InitGame();
@@ -117,18 +145,12 @@ int main()
 
 		if (IsMouseButtonDown(MOUSE_BUTTON_LEFT))
 		{
-			if (GetMouseX() < w && GetMouseY() < h)
-			{
-				grid[GetMouseX() / particleSize][GetMouseY() / particleSize] = 1;
-			}
+			PaintSand();
 		}
 
 		if (IsMouseButtonDown(MOUSE_BUTTON_RIGHT))
 		{
-			if (GetMouseX() < w && GetMouseY() < h)
-			{
-				grid[GetMouseX() / particleSize][GetMouseY() / particleSize] = 2;
-			}
+			PaintWall();
 		}
 		
 		//Grid stuff
@@ -151,11 +173,11 @@ int main()
 			{
 				if (grid[i][j] == 1)
 				{
-					DrawRectangle(i * particleSize, j * particleSize, particleSize, particleSize, Color{ 255,255,255,255 });
+					DrawRectangle(i * particleSize, j * particleSize, particleSize, particleSize, Color{ 225,225,128,255 });
 				}
 				else if (grid[i][j] == 2)
 				{
-					DrawRectangle(i * particleSize, j * particleSize, particleSize, particleSize, Color{ 255,128,128,255 });
+					DrawRectangle(i * particleSize, j * particleSize, particleSize, particleSize, Color{ 200,200,200,255 });
 				}
 			}
 		}
